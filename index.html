@@ -1,139 +1,128 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Budget & Économies — Kevin Croy</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
-  <style>
-    :root{
-      --bg:#0c1117; --panel:#121826; --muted:#9aa3b2; --text:#e8edf2;
-      --outline:rgba(255,255,255,.08); --ring:rgba(46,168,255,.25);
-      --green:#22c55e; --blue:#60a5fa; --amber:#f59e0b; --rose:#fb7185; --grey:#cbd5e1;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:#0c1117;color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
-    header{position:sticky;top:0;z-index:20;background:#0c1117cc;backdrop-filter:blur(8px);border-bottom:1px solid var(--outline)}
-    header .bar{max-width:1200px;margin:0 auto;padding:12px 16px;display:flex;gap:12px;align-items:center}
-    .dot{width:10px;height:10px;border-radius:50%;background:#22c55e}
-    h1{font-size:18px;margin:0}
-    .badge{border:1px solid var(--outline);color:var(--muted);padding:6px 10px;border-radius:999px;font-size:12px}
-    .spacer{flex:1}
-    .btn{background:#111827;border:1px solid var(--outline);color:var(--text);padding:8px 12px;border-radius:10px;cursor:pointer}
-    .btn.primary{background:linear-gradient(90deg,#16a34a,#22c55e);color:#06240f;border:none;font-weight:700}
-    .btn.warn{background:#1f2937;border:1px solid #334155}
-    .wrap{max-width:1200px;margin:0 auto;padding:20px 16px 80px}
-    .grid{display:grid;grid-template-columns:1fr;gap:16px}
-    @media(min-width:1100px){.grid{grid-template-columns:380px 1fr}}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid var(--outline);border-radius:16px;padding:16px}
-    .row{display:grid;grid-template-columns:1fr 140px;gap:10px;align-items:center;margin-top:8px}
-    label{font-size:13px;color:var(--muted)}
-    input,select{width:140px;padding:10px;border-radius:10px;border:1px solid var(--outline);background:#0f1522;color:var(--text);outline:none}
-    input:focus,select:focus{border-color:#2ea8ff;box-shadow:0 0 0 4px var(--ring)}
-    .hr{height:1px;background:var(--outline);margin:10px 0}
-    .legend{display:flex;gap:14px;flex-wrap:wrap;margin:6px 0 8px}
-    .dotLegend{width:10px;height:10px;border-radius:50%;display:inline-block}
-    .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
-    .kpi{background:rgba(255,255,255,.04);border:1px solid var(--outline);border-radius:12px;padding:10px}
-    .kpi .lab{font-size:12px;color:var(--muted)}
-    .kpi .val{font-size:18px;font-weight:700;margin-top:2px}
-    .section{margin-top:10px}
-    .secHead{display:flex;align-items:center;gap:8px;margin-bottom:8px}
-    .pill{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--outline);color:var(--muted)}
-    .list{display:grid;gap:10px}
-    .item{display:grid;grid-template-columns:1fr 110px 110px 28px;gap:8px;align-items:center}
-    .item input[type="text"]{width:100%;padding:10px;border-radius:10px;border:1px solid var(--outline);background:#0f1522;color:var(--text)}
-    .delete{background:#1f2937;border:1px solid #334155;color:#fda4af;border-radius:8px;cursor:pointer}
-    .addRow{margin-top:8px}
-    table{width:100%;border-collapse:collapse}
-    thead th{background:rgba(255,255,255,.05);padding:10px;color:#cbd5e1;text-align:left}
-    tbody td{border-top:1px solid var(--outline);padding:10px;color:#dbe2ea}
-    .tip{font-size:13px;color:#cfe8ff}
-    .banner{background:#0b1220;border:1px solid var(--outline);border-radius:10px;padding:8px 10px;color:#cfe8ff;margin-bottom:8px;display:none}
-  </style>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Allocation & Objectif — Kevin Croy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+<style>
+:root{
+  --bg:#0c1117; --panel:#121826; --muted:#9aa3b2; --text:#e8edf2;
+  --outline:rgba(255,255,255,.08); --ring:rgba(46,168,255,.25);
+  --green:#22c55e; --blue:#60a5fa; --amber:#f59e0b; --rose:#fb7185; --grey:#cbd5e1;
+}
+*{box-sizing:border-box} html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{position:sticky;top:0;z-index:30;background:#0c1117cc;backdrop-filter:blur(8px);border-bottom:1px solid var(--outline)}
+header .bar{max-width:1280px;margin:0 auto;padding:12px 16px;display:flex;gap:12px;align-items:center}
+.dot{width:10px;height:10px;border-radius:50%;background:#22c55e}
+h1{font-size:18px;margin:0}
+.badge{border:1px solid var(--outline);color:var(--muted);padding:6px 10px;border-radius:999px;font-size:12px}
+.spacer{flex:1}
+.btn{background:#111827;border:1px solid var(--outline);color:var(--text);padding:8px 12px;border-radius:10px;cursor:pointer}
+.btn.primary{background:linear-gradient(90deg,#16a34a,#22c55e);color:#06240f;border:none;font-weight:700}
+.wrap{max-width:1280px;margin:0 auto;padding:20px 16px 80px}
+.grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:1100px){.grid{grid-template-columns:1.15fr .85fr}}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(255,255,255,.03));border:1px solid var(--outline);border-radius:16px;padding:16px}
+.row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+input,select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--outline);background:#0f1522;color:var(--text)}
+input:focus,select:focus{border-color:#2ea8ff;box-shadow:0 0 0 4px var(--ring)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}
+.kpi{background:rgba(255,255,255,.04);border:1px solid var(--outline);border-radius:12px;padding:10px}
+.kpi .lab{font-size:12px;color:var(--muted)} .kpi .val{font-weight:700;font-size:18px;margin-top:2px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+thead th{background:rgba(255,255,255,.05);padding:10px;color:#cbd5e1;text-align:left;position:sticky;top:0}
+tbody td{border-top:1px solid var(--outline);padding:8px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.tag{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--outline);color:var(--muted);padding:6px 10px;border-radius:999px;font-size:12px}
+.small{font-size:12px;color:#aab6c4}
+.hr{height:1px;background:var(--outline);margin:12px 0}
+.pies{display:grid;grid-template-columns:1fr;gap:12px}
+@media(min-width:900px){.pies{grid-template-columns:repeat(3,1fr)}}
+.add{margin-top:10px}
+.del{background:#1f2937;border:1px solid #334155;color:#fda4af;border-radius:8px;cursor:pointer;padding:6px 10px}
+tfoot td{border-top:2px solid var(--outline);padding:10px;font-weight:700}
+.help{font-size:12px;color:#cfe8ff}
+</style>
 </head>
 <body>
 <header>
   <div class="bar">
     <div class="dot"></div>
-    <h1>Budget & Économies — <strong>Kevin Croy</strong></h1>
-    <span class="badge">Fixes</span>
-    <span class="badge">Variables</span>
-    <span class="badge">Obligatoires</span>
+    <h1>Allocation & Objectif — <strong>Kevin Croy</strong></h1>
+    <span class="badge">Tableaux + Pies</span>
     <div class="spacer"></div>
-    <button id="share" class="btn">Partager</button>
-    <button id="csv" class="btn primary">Exporter CSV</button>
+    <button id="csv" class="btn">Exporter CSV</button>
+    <button id="reset" class="btn">Réinitialiser</button>
+    <button id="clear" class="btn">Effacer la sauvegarde</button>
+    <button id="save" class="btn primary">Enregistrer</button>
   </div>
 </header>
 
 <div class="wrap">
   <div class="grid">
-    <!-- LEFT: Inputs -->
+    <!-- GAUCHE : paramètres + tableau -->
     <div class="card">
-      <div id="banner" class="banner">💡 Si tu ne vois pas de lignes par défaut, clique sur <b>“Effacer la sauvegarde”</b> pour repartir d’un modèle pré-rempli.</div>
-      <div class="row"><label>Revenu net mensuel (€)</label><input id="revenu" type="number" value="2500"></div>
-      <div class="row"><label>Taux d’épargne cible (%)</label><input id="tauxEpargne" type="number" value="20"></div>
-      <div class="row"><label>Taille du foyer</label>
-        <select id="foyer"><option>1</option><option>2</option><option selected>3</option><option>4</option><option>5</option></select>
-      </div>
-      <div class="hr"></div>
-
-      <div class="section">
-        <div class="secHead"><h3 style="margin:0">Dépenses fixes</h3><span class="pill">loyer, assurances, abonnements…</span></div>
-        <div id="listFixes" class="list"></div>
-        <button id="addFixe" class="btn addRow">+ Ajouter une dépense fixe</button>
-      </div>
-
-      <div class="section">
-        <div class="secHead"><h3 style="margin:0">Dépenses variables</h3><span class="pill">courses, sorties, carburant…</span></div>
-        <div id="listVariables" class="list"></div>
-        <button id="addVariable" class="btn addRow">+ Ajouter une dépense variable</button>
-      </div>
-
-      <div class="section">
-        <div class="secHead"><h3 style="margin:0">Obligatoires</h3><span class="pill">impôts, remboursements, cantine…</span></div>
-        <div id="listOblig" class="list"></div>
-        <button id="addOblig" class="btn addRow">+ Ajouter une dépense obligatoire</button>
+      <h3 style="margin:0 0 10px">Paramètres</h3>
+      <div class="row">
+        <div><div class="small">Objectif (EUR)</div><input id="goal" type="number" value="3000000"></div>
+        <div><div class="small">EUR → USD</div><input id="eurusd" type="number" step="0.0001" value="1.04"></div>
+        <div><div class="small">EUR → CHF</div><input id="eurchf" type="number" step="0.0001" value="0.94"></div>
+        <div><div class="small">Dernière MAJ</div><input id="last" type="date"></div>
+        <div><div class="small">Devise d’affichage</div>
+          <select id="display">
+            <option value="EUR" selected>EUR</option>
+            <option value="USD">USD</option>
+            <option value="CHF">CHF</option>
+          </select>
+        </div>
+        <div class="help" style="align-self:end">💾 Auto-sauvegarde locale — CSV pour Excel</div>
       </div>
 
       <div class="hr"></div>
-      <div class="section">
-        <button id="reset" class="btn warn">Réinitialiser (conserver sauvegarde)</button>
-        <button id="clear" class="btn warn">Effacer la sauvegarde</button>
+      <div class="actions">
+        <span class="tag">Type: <span class="small">Crypto / Actions / Cash / Immobilier…</span></span>
+        <span class="tag">Secteur: <span class="small">Private equities / Immobilier / Banques…</span></span>
+        <span class="tag">Pays: <span class="small">FR/CH/UK/US/AE…</span></span>
       </div>
+
+      <div class="hr"></div>
+      <h3 style="margin:0 0 8px">Positions</h3>
+      <div class="help">Astuce : double-clique dans une cellule pour modifier. Ajoute des lignes avec “Ajouter une ligne”.</div>
+      <div style="overflow:auto; margin-top:6px">
+        <table id="tbl">
+          <thead>
+            <tr>
+              <th>Type</th><th>Secteur</th><th>Asset / Compte</th><th>Pays</th>
+              <th>Montant (EUR)</th><th>% cible (facult.)</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+          <tfoot>
+            <tr><td colspan="4">Total</td><td id="totEUR">—</td><td></td><td></td></tr>
+          </tfoot>
+        </table>
+      </div>
+      <button id="add" class="btn add">+ Ajouter une ligne</button>
     </div>
 
-    <!-- RIGHT: KPIs + Charts + Insights -->
+    <!-- DROITE : kpi + chart -->
     <div class="card">
+      <h3 style="margin:0 0 8px">Synthèse</h3>
       <div class="kpis">
-        <div class="kpi"><div class="lab">Dépenses fixes</div><div id="k_fixes" class="val">—</div></div>
-        <div class="kpi"><div class="lab">Variables</div><div id="k_variables" class="val">—</div></div>
-        <div class="kpi"><div class="lab">Obligatoires</div><div id="k_oblig" class="val">—</div></div>
-        <div class="kpi"><div class="lab">Épargne potentielle</div><div id="k_epargne" class="val">—</div></div>
-        <div class="kpi"><div class="lab">Taux d’épargne</div><div id="k_taux" class="val">—</div></div>
+        <div class="kpi"><div class="lab">Valeur totale</div><div id="k_total" class="val">—</div></div>
+        <div class="kpi"><div class="lab">Total (USD)</div><div id="k_usd" class="val">—</div></div>
+        <div class="kpi"><div class="lab">Total (CHF)</div><div id="k_chf" class="val">—</div></div>
+        <div class="kpi"><div class="lab">Reste à l’objectif</div><div id="k_left" class="val">—</div></div>
       </div>
 
-      <div class="legend">
-        <span><span class="dotLegend" style="background:var(--green)"></span> Fixes</span>
-        <span><span class="dotLegend" style="background:var(--amber)"></span> Variables</span>
-        <span><span class="dotLegend" style="background:var(--rose)"></span> Obligatoires</span>
-        <span><span class="dotLegend" style="background:var(--blue)"></span> Épargne</span>
-      </div>
-      <div style="height:300px"><canvas id="chart"></canvas></div>
-
       <div class="hr"></div>
-      <h3 style="margin:0 0 8px">Opportunités d’économies (auto)</h3>
-      <ul id="tips" class="tip"></ul>
-
-      <div class="hr"></div>
-      <h3 style="margin:0 0 8px">Vue détaillée</h3>
-      <div style="overflow:auto">
-        <table id="tab">
-          <thead><tr><th>Catégorie</th><th>Intitulé</th><th>Mensuel (€)</th><th>Fixe/Variable/Oblig.</th></tr></thead>
-          <tbody></tbody>
-        </table>
+      <div class="pies">
+        <div><div class="small">Par secteur</div><canvas id="pieSector" height="220"></canvas></div>
+        <div><div class="small">Par asset</div><canvas id="pieAsset" height="220"></canvas></div>
+        <div><div class="small">Par type</div><canvas id="pieType" height="220"></canvas></div>
       </div>
     </div>
   </div>
@@ -141,191 +130,183 @@
 
 <script>
 (function(){
-  const KEY='budget-v1';
-  const € = n => new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:0}).format(n||0);
-  const el = id => document.getElementById(id);
+  "use strict";
+  const KEY = "alloc-v1";
+  const fmt = (n,cur) => new Intl.NumberFormat('fr-FR',{style:'currency',currency:cur||'EUR',maximumFractionDigits:0}).format(n||0);
 
-  // Defaults
+  // State par défaut (quelques lignes pour démarrer)
   const defaults = {
-    revenu: 2500, tauxEpargne: 20, foyer: 3,
-    fixes: [
-      {name:'Loyer / Crédit logement', amount: 950},
-      {name:'Assurance habitation', amount: 20},
-      {name:'Assurance auto', amount: 55},
-      {name:'Électricité + gaz', amount: 90},
-      {name:'Forfaits mobiles', amount: 40},
-      {name:'Internet', amount: 30},
-      {name:'Abonnements (SVOD, musique…)', amount: 35},
-      {name:'Mutuelle santé', amount: 45},
-    ],
-    variables: [
-      {name:'Courses', amount: 450},
-      {name:'Carburant / Transports', amount: 120},
-      {name:'Restaurants / Cafés', amount: 120},
-      {name:'Loisirs / Sport', amount: 60},
-      {name:'Divers', amount: 80},
-    ],
-    oblig: [
-      {name:'Impôt mensuel', amount: 150},
-      {name:'Cantine / Crèche', amount: 120},
-      {name:'Remboursement crédit conso', amount: 90},
+    goal: 3000000, eurusd: 1.04, eurchf: 0.94, display: "EUR",
+    last: new Date().toISOString().slice(0,10),
+    rows: [
+      {type:"Cash", secteur:"Banques & Assurances", asset:"Compte bancaire 1", pays:"France", eur:5000, cible:""},
+      {type:"Cash", secteur:"Banques & Assurances", asset:"Compte bancaire 2", pays:"Suisse", eur:25000, cible:""},
+      {type:"Cryptos", secteur:"Autre", asset:"eToro / Swissquote", pays:"France", eur:5000, cible:""},
+      {type:"CFDs / Fx", secteur:"Autre", asset:"Pepperstone", pays:"UK", eur:5000, cible:""},
+      {type:"Immobilier", secteur:"Immobilier", asset:"SCI Immobilier", pays:"France", eur:450000, cible:""},
+      {type:"Private Equities", secteur:"Private Equities", asset:"Compagnie 1", pays:"UAE", eur:75000, cible:""}
     ]
   };
 
-  // Merge saved with defaults safely
-  function loadSaved(){
-    try { return JSON.parse(localStorage.getItem(KEY)||'null'); } catch(e){ return null; }
+  // Chargement
+  function load(){
+    try { return JSON.parse(localStorage.getItem(KEY)||""); } catch(e){ return null; }
   }
-  const saved = loadSaved() || {};
-  let state = {
-    ...defaults,
-    ...saved,
-    fixes: Array.isArray(saved.fixes) ? saved.fixes : defaults.fixes.slice(),
-    variables: Array.isArray(saved.variables) ? saved.variables : defaults.variables.slice(),
-    oblig: Array.isArray(saved.oblig) ? saved.oblig : defaults.oblig.slice()
+  let state = Object.assign({}, defaults, load()||{});
+  if(!Array.isArray(state.rows)) state.rows = defaults.rows.slice();
+
+  // DOM refs
+  const tbody = document.getElementById("tbody");
+  const kTot = document.getElementById("k_total");
+  const kUSD = document.getElementById("k_usd");
+  const kCHF = document.getElementById("k_chf");
+  const kLeft= document.getElementById("k_left");
+  const totEUR = document.getElementById("totEUR");
+  const inputs = {
+    goal: document.getElementById("goal"),
+    eurusd: document.getElementById("eurusd"),
+    eurchf: document.getElementById("eurchf"),
+    display: document.getElementById("display"),
+    last: document.getElementById("last"),
   };
 
-  // Elements
-  const lists = { fixes: el('listFixes'), variables: el('listVariables'), oblig: el('listOblig') };
-  const banner = el('banner');
+  // Init inputs
+  inputs.goal.value   = state.goal;
+  inputs.eurusd.value = state.eurusd;
+  inputs.eurchf.value = state.eurchf;
+  inputs.display.value= state.display;
+  inputs.last.value   = state.last;
 
-  function maybeBanner(){
-    const empty = (!state.fixes?.length) && (!state.variables?.length) && (!state.oblig?.length);
-    banner.style.display = empty ? 'block' : 'none';
-  }
-
-  function renderList(kind){
-    if (!Array.isArray(state[kind])) state[kind] = [];
-    const container = lists[kind];
-    container.innerHTML = '';
-    state[kind].forEach((it, idx) => {
-      const row = document.createElement('div');
-      row.className = 'item';
-      row.innerHTML = `
-        <input type="text" value="${it.name||''}" placeholder="Intitulé">
-        <input type="number" value="${Number(it.amount||0)}" min="0" step="1">
-        <span style="color:#94a3b8;font-size:12px">€/mois</span>
-        <button class="delete" title="Supprimer">×</button>
+  // Table render
+  function renderRows(){
+    tbody.innerHTML = "";
+    state.rows.forEach((r,idx)=>{
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td contenteditable="true" data-k="type">${r.type||""}</td>
+        <td contenteditable="true" data-k="secteur">${r.secteur||""}</td>
+        <td contenteditable="true" data-k="asset">${r.asset||""}</td>
+        <td contenteditable="true" data-k="pays">${r.pays||""}</td>
+        <td contenteditable="true" data-k="eur">${Number(r.eur||0)}</td>
+        <td contenteditable="true" data-k="cible">${r.cible||""}</td>
+        <td><button class="del" data-i="${idx}">Supprimer</button></td>
       `;
-      const [title,input] = row.querySelectorAll('input');
-      const del = row.querySelector('.delete');
-      title.addEventListener('input', e => { it.name = e.target.value; changed(); });
-      input.addEventListener('input', e => { it.amount = Number(e.target.value||0); changed(); });
-      del.addEventListener('click', () => { state[kind].splice(idx,1); changed(); renderAll(); });
-      container.appendChild(row);
+      tbody.appendChild(tr);
+    });
+    // Listeners edit
+    tbody.querySelectorAll("[contenteditable]").forEach(td=>{
+      td.addEventListener("blur", e=>{
+        const cell = e.currentTarget;
+        const k = cell.dataset.k;
+        const i = Array.from(tbody.children).indexOf(cell.parentElement);
+        let val = cell.textContent.trim();
+        if(k==="eur"){ val = Number(val.replace(/\s/g,"").replace(",",".")||0); }
+        state.rows[i][k] = val;
+        changed();
+      });
+      td.addEventListener("keydown", e=>{
+        if(e.key==="Enter"){ e.preventDefault(); e.currentTarget.blur(); }
+      });
+    });
+    // delete
+    tbody.querySelectorAll(".del").forEach(b=>{
+      b.addEventListener("click", ()=>{
+        const i = Number(b.dataset.i);
+        state.rows.splice(i,1);
+        changed(); renderRows(); renderAll();
+      });
     });
   }
 
-  function addItem(kind, name='', amount=0){
-    if (!Array.isArray(state[kind])) state[kind] = [];
-    state[kind].push({name, amount});
-    renderList(kind); changed();
-  }
-
-  function renderLeft(){
-    el('revenu').value = state.revenu;
-    el('tauxEpargne').value = state.tauxEpargne;
-    el('foyer').value = state.foyer;
-    renderList('fixes'); renderList('variables'); renderList('oblig');
-    maybeBanner();
-  }
-
-  function sum(arr){ return (Array.isArray(arr)?arr:[]).reduce((a,b)=> a + Number(b.amount||0), 0); }
+  // Maths
   function compute(){
-    const fixes = sum(state.fixes), variables = sum(state.variables), oblig = sum(state.oblig);
-    const depenses = fixes + variables + oblig;
-    const revenu = Number(state.revenu||0);
-    const epargnePot = Math.max(0, revenu - depenses);
-    const taux = revenu>0 ? (epargnePot / revenu * 100) : 0;
-    return {fixes, variables, oblig, depenses, revenu, epargnePot, taux};
+    const eur = state.rows.reduce((a,b)=> a + Number(b.eur||0), 0);
+    const usd = eur * Number(state.eurusd||1);
+    const chf = eur * Number(state.eurchf||1);
+    const left = Math.max(0, Number(state.goal||0) - eur);
+    return {eur, usd, chf, left};
   }
 
+  // Group helpers
+  function groupSum(arr, key){
+    const m = new Map();
+    arr.forEach(r=>{
+      const k = (r[key]||"Inconnu").toString();
+      m.set(k, (m.get(k)||0) + Number(r.eur||0));
+    });
+    return [...m.entries()].sort((a,b)=> b[1]-a[1]);
+  }
+
+  // Charts
+  const pieSector = new Chart(document.getElementById("pieSector"),{type:'doughnut',data:{labels:[],datasets:[{data:[]}]},options:{plugins:{legend:{labels:{color:"#dbe2ea"}}}}});
+  const pieAsset  = new Chart(document.getElementById("pieAsset"), {type:'doughnut',data:{labels:[],datasets:[{data:[]}]},options:{plugins:{legend:{labels:{color:"#dbe2ea"}}}}});
+  const pieType   = new Chart(document.getElementById("pieType"),  {type:'doughnut',data:{labels:[],datasets:[{data:[]}]},options:{plugins:{legend:{labels:{color:"#dbe2ea"}}}}});
+
+  function renderCharts(){
+    const sec = groupSum(state.rows,"secteur");
+    const ass = groupSum(state.rows,"asset");
+    const typ = groupSum(state.rows,"type");
+    const colors = ['#22c55e','#60a5fa','#f59e0b','#fb7185','#a78bfa','#34d399','#fca5a5','#93c5fd','#fbbf24','#10b981'];
+    function set(pie, data){
+      pie.data.labels = data.map(([k])=>k);
+      pie.data.datasets[0].data = data.map(([,v])=>v);
+      pie.data.datasets[0].backgroundColor = data.map((_,i)=> colors[i%colors.length]);
+      pie.update('none');
+    }
+    set(pieSector, sec); set(pieAsset, ass); set(pieType, typ);
+  }
+
+  // KPIs
   function renderKPIs(){
     const k = compute();
-    el('k_fixes').textContent = €(k.fixes);
-    el('k_variables').textContent = €(k.variables);
-    el('k_oblig').textContent = €(k.oblig);
-    el('k_epargne').textContent = €(k.epargnePot);
-    el('k_taux').textContent = isFinite(k.taux) ? k.taux.toFixed(1)+' %' : '—';
+    const cur = inputs.display.value;
+    const factor = cur==="EUR" ? 1 : (cur==="USD" ? Number(state.eurusd||1) : Number(state.eurchf||1));
+    const totalDisp = k.eur * factor;
+    kTot.textContent = fmt(totalDisp, cur);
+    kUSD.textContent = fmt(k.usd,'USD');
+    kCHF.textContent = fmt(k.chf,'CHF');
+    kLeft.textContent = fmt(k.left,'EUR');
+    totEUR.textContent = fmt(k.eur,'EUR');
   }
 
-  const chart = new Chart(el('chart'), {
-    type:'doughnut',
-    data:{ labels:['Fixes','Variables','Obligatoires','Épargne'],
-      datasets:[{ data:[0,0,0,0], backgroundColor:['#22c55e','#f59e0b','#fb7185','#60a5fa'] }]
-    },
-    options:{plugins:{legend:{labels:{color:'#dbe2ea'}}}}
-  });
+  function renderAll(){ renderKPIs(); renderCharts(); }
 
-  function renderChart(){
-    const k = compute();
-    chart.data.datasets[0].data = [k.fixes, k.variables, k.oblig, Math.max(0,k.epargnePot)];
-    chart.update('none');
-  }
-
-  function renderTips(){
-    const k = compute();
-    const tips = [];
-    const bFixes = 0.50 * k.revenu, bVars = 0.30 * k.revenu, bSave = 0.20 * k.revenu;
-    if (k.fixes > bFixes) tips.push(`🔧 Tes <b>fixes</b> dépassent 50 % (${€(k.fixes)} vs ${€(bFixes)}). Renégocier box/forfaits, assurances, énergie, trier abonnements.`);
-    if (k.variables > bVars) tips.push(`🍽️ Tes <b>variables</b> dépassent 30 % (${€(k.variables)} vs ${€(bVars)}). Liste de courses, plafonds hebdo, batch cooking.`);
-    if (k.epargnePot < bSave) tips.push(`💰 Épargne potentielle ${€(k.epargnePot)} (< ${€(bSave)} visés). Automatise ${state.tauxEpargne}% le jour de paye.`);
-    const sub = (state.fixes||[]).find(x => /abonnements?|netflix|prime|canal|spotify|disney/i.test(x.name||''));
-    if (sub && sub.amount >= 25) tips.push(`📺 Abonnements à ${€(sub.amount)} : partage familial, offres annuelles, mettre en pause 1–2 mois/12.`);
-    const list = document.getElementById('tips');
-    list.innerHTML = tips.length ? tips.map(t => `<li>${t}</li>`).join('') : '<li>Aucune alerte — budget ok 👌</li>';
-  }
-
-  function renderTable(){
-    const tbody = document.querySelector('#tab tbody');
-    const safe = a => Array.isArray(a)?a:[];
-    const row = (cat, it, type) => `<tr><td>${cat}</td><td>${it.name||''}</td><td>${(it.amount||0).toFixed(0)}</td><td>${type}</td></tr>`;
-    tbody.innerHTML = [
-      ...safe(state.fixes).map(it=>row('Fixe', it, 'Fixe')),
-      ...safe(state.variables).map(it=>row('Variable', it, 'Variable')),
-      ...safe(state.oblig).map(it=>row('Obligatoire', it, 'Obligatoire')),
-    ].join('');
-  }
-
-  function renderAll(){ renderKPIs(); renderChart(); renderTips(); renderTable(); }
-
+  // Save
   function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
-  function changed(){ save(); maybeBanner(); renderAll(); }
+  function changed(){ save(); renderAll(); }
 
-  // Bind inputs
-  el('revenu').addEventListener('input', e => { state.revenu = Number(e.target.value||0); changed(); });
-  el('tauxEpargne').addEventListener('input', e => { state.tauxEpargne = Number(e.target.value||0); changed(); });
-  el('foyer').addEventListener('change', e => { state.foyer = Number(e.target.value); changed(); });
-  el('addFixe').addEventListener('click', ()=> addItem('fixes'));
-  el('addVariable').addEventListener('click', ()=> addItem('variables'));
-  el('addOblig').addEventListener('click', ()=> addItem('oblig'));
-
-  // Reset / Clear
-  el('reset').addEventListener('click', ()=>{ state = JSON.parse(JSON.stringify(defaults)); renderLeft(); changed(); });
-  el('clear').addEventListener('click', ()=>{ localStorage.removeItem(KEY); state = JSON.parse(JSON.stringify(defaults)); renderLeft(); changed(); });
-
-  // Share & CSV
-  el('share').addEventListener('click', ()=>{
-    const k = compute();
-    const text = `Budget — Revenu: ${€(k.revenu)} | Fixes: ${€(k.fixes)} | Variables: ${€(k.variables)} | Obligatoires: ${€(k.oblig)} | Épargne: ${€(k.epargnePot)} (${k.taux.toFixed(1)}%)`;
-    if(navigator.share){ navigator.share({text}).catch(()=>{}); }
-    else if(navigator.clipboard){ navigator.clipboard.writeText(text); alert('Résumé copié 📋'); }
-  });
-  el('csv').addEventListener('click', ()=>{
-    const rows = [['Categorie','Intitulé','Mensuel','Type']];
-    (state.fixes||[]).forEach(x=>rows.push(['Fixe',x.name,x.amount,'Fixe']));
-    (state.variables||[]).forEach(x=>rows.push(['Variable',x.name,x.amount,'Variable']));
-    (state.oblig||[]).forEach(x=>rows.push(['Obligatoire',x.name,x.amount,'Obligatoire']));
-    const csv = rows.map(r=>r.join(',')).join('\n');
-    const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
-    const url = URL.createObjectURL(blob); const a = document.createElement('a');
-    a.href=url; a.download='budget.csv'; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  // Add line
+  document.getElementById("add").addEventListener("click", ()=>{
+    state.rows.push({type:"",secteur:"",asset:"",pays:"",eur:0,cible:""});
+    renderRows(); changed();
   });
 
-  // Initial render
-  function init(){ renderLeft(); renderAll(); }
-  // Ensure we run after DOM is ready even if script loads in head on some hosts
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  // Header inputs
+  ["goal","eurusd","eurchf","display","last"].forEach(id=>{
+    inputs[id].addEventListener("input", e=>{
+      state[id] = id==="goal"||id==="eurusd"||id==="eurchf" ? Number(e.target.value||0) : e.target.value;
+      changed();
+    });
+  });
+
+  // Buttons
+  document.getElementById("save").addEventListener("click", save);
+  document.getElementById("reset").addEventListener("click", ()=>{
+    state = JSON.parse(JSON.stringify(defaults)); renderRows(); changed();
+  });
+  document.getElementById("clear").addEventListener("click", ()=>{
+    localStorage.removeItem(KEY); state = JSON.parse(JSON.stringify(defaults)); renderRows(); changed();
+  });
+  document.getElementById("csv").addEventListener("click", ()=>{
+    const head = ["Type","Secteur","Asset","Pays","EUR","Cible%"];
+    const rows = state.rows.map(r=>[r.type,r.secteur,r.asset,r.pays,Number(r.eur||0),r.cible]);
+    const csv = [head,...rows].map(r=>r.join(",")).join("\n");
+    const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"}); const url = URL.createObjectURL(blob);
+    const a = document.createElement("a"); a.href=url; a.download="allocation.csv"; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+  });
+
+  // First render
+  renderRows(); renderAll();
 })();
 </script>
 </body>
